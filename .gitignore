@@ -1,0 +1,6 @@
+# folders
+build/
+elf/
+
+# files
+*.z64

@@ -1,5 +1,7 @@
-TARGET := sssv.us
-PROJECT_DIR := ../sssv
+BASENAME  = sssv
+VERSION  := us
+TARGET := $(BASENAME).$(VERSION)
+PROJECT_DIR := ../$(BASENAME)
 
 # Directories
 SRC_DIR := src
@@ -39,7 +41,7 @@ OBJS := $(C_OBJS) $(A_OBJS) $(Z64_IN_OBJ)
 
 # Flags
 CFLAGS      := -c -mabi=32 -ffreestanding -mfix4300 -G 0 -fno-zero-initialized-in-bss -Wall -Wextra -Wpedantic
-CPPFLAGS    := -Iinclude -Iinclude -I$(PROJECT_DIR)/include/2.0I -DF3DEX_GBI -D_LANGUAGE_C
+CPPFLAGS    := -Iinclude -Iinclude -I$(PROJECT_DIR)/include -I$(PROJECT_DIR)/include/2.0I -DF3DEX_GBI -D_LANGUAGE_C
 OPTFLAGS    := -Os
 ASFLAGS     := -c -x assembler-with-cpp -mabi=32 -ffreestanding -mfix4300 -G 0 -O -Iinclude
 LD_SCRIPT   := $(TARGET).ld
@@ -51,6 +53,14 @@ Z64OFLAGS   := -O binary
 # mips-linux-gnu toolchain specifics
 ifeq ($(CROSS),mips-linux-gnu-)
 CFLAGS      += -mno-shared -march=vr4300 -mfix4300 -mabi=32 -mhard-float -mdivide-breaks -fno-stack-protector -fno-common -fno-zero-initialized-in-bss -fno-PIC -mno-abicalls -fno-strict-aliasing -fno-inline-functions -ffreestanding -fwrapv -Wall -Wextra
+endif
+
+# version specific flags
+ifeq ($(VERSION),us)
+CFLAGS += -DVERSION_US
+endif
+ifeq ($(VERSION),eu)
+CFLAGS += -DVERSION_EU
 endif
 
 # Rules

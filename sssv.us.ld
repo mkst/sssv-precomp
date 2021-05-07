@@ -61,8 +61,8 @@ SECTIONS
     . = extRamStart;
     BEGIN_SEG(custom, .)
     {
-        BUILD_DIR/src/custom/helowrld.o(.text);
-        BUILD_DIR/src/custom/helowrld.o(.*data*);
+        BUILD_DIR/src/custom/precomp.o(.text);
+        BUILD_DIR/src/custom/precomp.o(.*data*);
     }
     END_SEG(custom)
 
@@ -76,8 +76,8 @@ SECTIONS
     /* call 'osLeoDiskInit' at read_rom_header() */
     J_HOOK(main, read_rom_header, 0x24, osLeoDiskInit, leo_hook)
 
-    /* call hello world at end of each display list */
-    J_HOOK(main, func_8012A490, 0xF0, helo_wrld, helo_wrld_hook)
+    /* call precomp function at end of each display list */
+    J_HOOK(main, end_display_lists, 0xF0, precomp, precomp_hook)
 
     /* Discard everything not specifically mentioned above. */
     /DISCARD/ :
